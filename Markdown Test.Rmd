@@ -1,0 +1,49 @@
+---
+title: "Markdown Practice"
+author: "James Waterford"
+date: "2023-02-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Terminal Intro
+===============
+
+One of the first things we learned in this class, is how to access the terminal. I run my software on mac, which means most programs are ran through BASH.
+This was mostly a tool for moving, editing, and updating changes to documents. Git and GitHub are the main aspects of this tool.
+
+
+Quick Code
+----------
+
+To move between directories: we use `cd` 
+
+To find our current directory: we use `pwd`
+
+To list files in a given directory: we use `ls -F`
+
+
+GitHub
+=======
+
+Git is a tool for tracking changes to files on a repository. It is compatible with Python, RStudio, Terminal, and pretty much everything. You can commit changes to Git through RStudio, GitHub, or your Terminal.
+
+
+```{r code}
+# Code can be added anyhwere to a document #
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
