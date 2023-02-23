@@ -1,0 +1,86 @@
+
+def PatternCount(Text,Pattern):
+    count = 0
+    # Measure the reading frame. Pattern is >= [3] 
+    for i in range(len(Text)-len(Pattern)+1):
+        # Read 3+ characters at a time, 
+        # and tested against base sequence 
+        if Text[i:i+len(Pattern)] == Pattern:
+            count = count +1
+    return count
+PatternCount("TACTGTACGATGATGTGTGTCAAAGGT", "TGT")
+def FrequencyMap(Text,k):
+    # Text = sequence
+    # K = k-mer length
+    # Create dictionary to store [something]
+    freq = {}
+    # Collect codons, with no count #
+    n = len(Text)
+    for i in range(n-k+1):
+        # with k-mer length considered 
+        # prepare a list of k-mer values
+        Pattern = Text[i:i+k]
+        freq[Pattern] = 0
+        # For the same range, count Pattern Repeats
+        for i in range(n-k+1):
+            if Text[i:i+k] == Pattern:
+                freq[Pattern] = freq[Pattern] + 1
+    return freq
+# Frequency Map counts the frequency of all codons in a seqeunce 
+
+
+def FrequentWords(Text, k):
+    words = []
+    freq = FrequencyMap(Text, k)
+    m = max(freq.values())
+    for key in freq:
+        if freq[key] == m:
+            words.append(key)
+    return words
+# Reads the most Frequent word(s)
+
+def Reverse(Pattern):
+    z = ''
+    for char in Pattern:
+        x = char
+        y = z
+        z = x + y
+    return (z)
+# revereses all letters in a string
+def Complement(Pattern):
+    str = ''
+    for char in Pattern:
+        if char == 'A':
+            str = str + 'T'
+        if char == 'T':
+            str = str + 'A'
+        if char == 'C':
+            str = str + 'G'
+        if char == 'G':
+            str = str + 'C'
+    return str
+# complememt each letter in a string
+def ReverseComplement(Pattern):
+    Pattern = Reverse(Pattern) 
+    Pattern = Complement(Pattern) 
+    return Pattern
+# Combine reverse pattern and complement pattern
+
+
+def PatternMatching(Pattern,Genome):
+    positions = [] # output variable
+    # Create numerical range to parse through the genome
+    for i in range(len(Genome)-len(Pattern)+1):
+        # Match Pattern by equal length portion in genome
+        if Genome[i:i+len(Pattern)] == Pattern:
+            positions.append(i)
+    return positions
+# Find all occurrences of a pattern in a string
+# Call PatternMatching with Pattern equal to "CTTGATCAT" and Genome equal to v_cholerae,
+Pattern = "CTTGATCAT"
+Genome = "CTTGATCATCTTGATCATCTTGATCAT"
+# and store the output as a variable called position
+position = PatternMatching(Pattern,Genome)
+# print the positions variable
+print(position)
+
