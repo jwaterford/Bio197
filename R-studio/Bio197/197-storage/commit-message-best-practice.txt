@@ -1,0 +1,3 @@
+It should be understandable.
+It should be just enough.
+It shuold be unambiguous.

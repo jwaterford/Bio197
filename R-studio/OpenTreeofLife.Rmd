@@ -1,0 +1,51 @@
+---
+title: "Open Tree of Life -- 'rotl' "
+output: html_document
+date: "2022-12-29"
+---
+
+```{r setup, include=FALSE}
+library(rotl)
+```
+
+## Intro
+
+I know nothing about this program, so as I go through, I'll put down codes that I'll be working on. Hopefully this doesn't take too long.
+
+'rotl' helps us interface with Open Tree of Life for Taxonomies and Studies
+
+## Taxa Search
+
+Test the ability of rotl to recognize different taxas.
+tnrs_matchnames()
+
+```{r Apes}
+apes <- c("Pongo", "Pan", "Gorilla", "Hoolock", "Homo", "Hylobates", "Nomascus")
+ape_taxa <- tnrs_match_names(apes)
+ape_taxa
+```
+
+## Make a Tree
+
+You can also embed plots, for example:
+'ott_id' pulls from the ape taxa we made earlier
+'plot()' is a necessary component
+
+```{r tree, echo=FALSE}
+tr <- tol_induced_subtree(ott_ids = ott_id(ape_taxa))
+plot(tr)
+```
+
+## What if 'trns_match_names' assigns incorrect values? 
+
+
+
+
+``` {r idk}
+inspect(ape_taxa, taxon_name = 'Hylobate')
+update(ape_taxa, taxon_name = "Hylobate",
+       new_ott_id = 166552)
+
+```
+
+
