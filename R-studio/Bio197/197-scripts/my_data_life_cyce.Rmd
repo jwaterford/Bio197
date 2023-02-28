@@ -9,22 +9,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Plan: 
-
+Plan: 
+-----
 Do background research to decide if you have enough resources and information to begin collecting data.
 
 
-## Collection: 
-
+Collection: 
+-----------
 Collect data from the sources you found in your plan.
 Process: Raw data needs to be cut down and prepared via a coding program.
 
 
-## Analyze: 
+Analyze: 
+--------
 Usually I will have some preliminary results. At this point, I have someone double check  the conclusions that my data suggests.
 Visualize: Refine your results with clear, comprehensible graphs.
 
 
-## Publish: 
+Publish:
+--------
 Store and share my results. 
 
