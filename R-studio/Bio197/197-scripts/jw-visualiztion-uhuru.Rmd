@@ -3,8 +3,8 @@ title: "Uhuru Data Set Visualization"
 author: "James Waterford"
 date: "2023-02-23"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 ![Acacia](https://live.staticflickr.com/7185/6922756579_49638c4951_b.jpg)
 ```{r setup, include=FALSE}
@@ -26,7 +26,9 @@ We will first call the file, based on the current directory. Then we will use `r
 Using `eval = TRUE` displays the data.
 
 ``` {r Pull & Create tsv, eval  = TRUE}
+## Provide file using a relative path ##
 acacia_csv <- ("../197-raw_storage/ACACIA_DREPANOLOBIUM_SURVEY.txt")
+## add `na.strings = "dead"
 acacia <- read.table(acacia_csv, header = TRUE, sep = "\t", fill = TRUE)
 ```
 
@@ -93,14 +95,16 @@ ggplot(data=acacia, mapping = aes(x=HEIGHT, y= AXIS1, color = TREATMENT)) +
   geom_point() +
   labs(x="Tree Height", y = "Tree Axis 1")
 ```
+Use `geom_point()` to create a scatter plot.
+
 
 What if we want to reshape our axes? 
 We have functions to `scale()` the data set.
 ```{r graph step 3}
-ggplot(data = acacia, mapping = aes(x = HEIGHT, y = AXIS1, color = TREATMENT)) +
-  geom_point() + 
-  scale_y_log10() + 
-  scale_x_log10()
+ggplot(data = acacia, mapping = aes(x = HEIGHT, y = FRUITS, color = ANT)) +
+  geom_point(size = 3, alpha= 0.5) +
+## Use facet_wrap 
+  facet_wrap(~ANT, scales = "free")
   
 ##Add in geom_smooth() for data insight##
   
