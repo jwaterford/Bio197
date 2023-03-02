@@ -3,10 +3,10 @@ title: "Uhuru Data Set Visualization"
 author: "James Waterford"
 date: "2023-02-23"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
-![Acacia](https://live.staticflickr.com/7185/6922756579_49638c4951_b.jpg)
+<!--![Acacia](https://live.staticflickr.com/7185/6922756579_49638c4951_b.jpg)-->
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -58,13 +58,13 @@ If you run `df[,X]`, you will get the full list of values from a Column.
 
 We can also use `$` as to sort through columns.
 
-```{r eval = TRUE}
+```{r}
 acacia[8,2] 
-##
-acacia[8]
-##
+
+head(acacia[8])
+
 acacia$HEIGHT
-##
+
 ```
 There are values in *HEIGHT* that we cannot keep. This is stopping us from treating HEIGHT as an integer.
 Let's replace those values.

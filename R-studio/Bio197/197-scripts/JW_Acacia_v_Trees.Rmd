@@ -1,0 +1,81 @@
+---
+title: "JW_Acacia_v_Trees"
+author: "James Waterford"
+date: "2023-03-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Fresh Start
+
+Previously, we looked at the UHURU data set, and got a lot of information from there. Maybe too much. Let's start again and only consider columns that are relevant to us.
+
+First, we must extract and prepare the files.
+
+```{r read, include=TRUE}
+library(readr)
+trees <- read_tsv("../197-raw_storage/TREE_SURVEYS.txt", 
+                col_types = list(HEIGHT = col_double(),
+                                AXIS_2 = col_double()))
+```
+
+## Calculations
+
+I want to know the area under the canopy. This is not provided to us in our data set,
+but we can calculate and create a designated column.
+
+To create a column, we write it into existence.  `df$[New_Col] <- c([Val])`
+
+Use `c([function])` to fill row values with data.
+
+```{r Add Column, eval=TRUE}
+
+trees$CANOPY <- (trees$AXIS_1 * trees$AXIS_2)
+
+head(trees$CANOPY)
+```
+
+Awesome. So we now have a new column added, but we still need to subset the data. There are a few methods.
+
+`subset([DATA.FRAME], select = c([ columns-to-keep ]))`
+```{r subset}
+new_trees <- subset(trees, select = c(SURVEY, YEAR, SITE, CANOPY, HEIGHT, TREATMENT, SPECIES))
+
+t1 <- data.frame(trees$CANOPY, trees$SURVEY, trees$YEAR, trees$SITE)
+
+## This first comma means "Leave the row values alone" ##
+t2 <- trees[,c("YEAR", "SITE", "CANOPY", "HEIGHT")] 
+
+```
+## Graphical Analysis
+
+Let's try creating a *scatterplot* and see how it looks. 
+
+We'll call `ggplot` and use `facet_wrap` to separate the data by each **species**
+
+```{r graph}
+library(ggplot2)
+ggplot(new_trees, aes(x = CANOPY,y= HEIGHT, color = TREATMENT)) +
+  geom_point() +
+  facet_wrap(~SPECIES)
+```
+This is good! But there is a reason that is looks so messy.
+
+The outlier in this data set is really throwing things off..
+
+Let's remove via the `subset()` function.
+``` {r subset pt2}
+new_trees <- subset(new_trees, CANOPY < 2000)
+```
+And then let's graph it again?
+```{r Graph again}
+library(ggplot2)
+ggplot(new_trees, aes(x = CANOPY,y= HEIGHT, color = TREATMENT)) +
+  geom_point() +
+  facet_wrap(~SPECIES) 
+```
+There we go! Now we have some clean(ish) data to look at. As we can see, Height is quite variable, and might be correlated in some species. 
+
