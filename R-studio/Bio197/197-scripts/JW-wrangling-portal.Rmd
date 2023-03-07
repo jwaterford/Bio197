@@ -1,0 +1,63 @@
+---
+title: "wrangling-portal"
+author: "James Waterford"
+date: "2023-03-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Portal, Arizona is a source of a long-term monitoring and experimental ecosystem.
+
+
+
+```{r Load-in}
+library(readr)
+surveys <- read_csv("../197-raw_storage/surveys.csv")
+species_data <- read.csv( "../197-raw_storage/species.csv")
+plots_data <- read.csv("../197-raw_storage/plots.csv")
+
+head(species_data)
+head(surveys)
+
+```
+
+## Combining Data Sets
+
+These data sets are supposed to communicate with each other.
+We are going to use the dplyr packages to get to work.
+
+Hindfoot length is measured in *millimeters*, but I want a new variable that shows Hindfoot length in *centimeters*.
+
+`Select` serves the purpose of pulling columns from a data frame.
+
+`mutate` creates a new column, based on the values in another. 
+```{r dplyr, echo=FALSE}
+library(dplyr)
+surveys1 <- select(surveys, year, month, day, species_id)
+head(surveys1)
+
+surveys2 <- (surveys, year, species_id, weight)
+mutate(surveys,hindfoot_length_cm = hindfoot_length/10)
+arrange(surveys,year)
+```
+
+Then we do some other things here I guess
+
+```{r}
+filter(surveys, species_id != "DS", year > 1995)
+filter(surveys, !is.na(weight))
+filter(surveys, weight >200)
+filter(surveys, weight <=100, sex == "F")
+filter(surveys, weight <=100 | sex == "F")
+
+```
+
+```{r}
+
+```
+
