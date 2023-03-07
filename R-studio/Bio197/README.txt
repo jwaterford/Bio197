@@ -9,8 +9,9 @@ File Overview
 ##STARTING TERMINAL##
 
 bash
-cd /Users/slimjims/desktop/01100011/R-studio/R-Compiling/Bio197
+cd /Users/slimjims/desktop/master/R-studio/Bio197
 Ls -F
+
 
 
 

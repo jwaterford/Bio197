@@ -35,7 +35,7 @@ Git is a tool for tracking changes to files on a repository. It is compatible wi
 
 
 ```{r code}
-# Code can be added anyhwere to a document #
+# Code can be added anywhere to a document #
 ```
 
 ## Including Plots

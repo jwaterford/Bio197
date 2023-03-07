@@ -41,6 +41,7 @@ head(trees$CANOPY)
 Awesome. So we now have a new column added, but we still need to subset the data. There are a few methods.
 
 `subset([DATA.FRAME], select = c([ columns-to-keep ]))`
+
 ```{r subset}
 new_trees <- subset(trees, select = c(SURVEY, YEAR, SITE, CANOPY, HEIGHT, TREATMENT, SPECIES))
 
@@ -78,4 +79,17 @@ ggplot(new_trees, aes(x = CANOPY,y= HEIGHT, color = TREATMENT)) +
   facet_wrap(~SPECIES) 
 ```
 There we go! Now we have some clean(ish) data to look at. As we can see, Height is quite variable, and might be correlated in some species. 
+
+```{r One more graph}
+
+
+Acacia_sub <- subset(trees, SPECIES == "Acacia_etbaica" | SPECIES == "Acacia_drepanolobium" | SPECIES == "Acacia_brevispica" | SPECIES == "Acacia_mellifera")
+other_sub <- subset(trees, SPECIES != "Acacia_etbaica" & SPECIES != "Acacia_drepanolobium" & SPECIES != "Acacia_brevispica" & SPECIES != "Acacia_mellifera")
+
+trees$TreeType <- c("Acacia")
+
+ggplot(trees, aes(x= CIRC, y= HEIGHT, colour = SPECIES)) +
+  geom_point()
+  
+```
 
