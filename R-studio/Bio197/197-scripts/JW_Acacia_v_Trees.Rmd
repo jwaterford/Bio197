@@ -2,7 +2,9 @@
 title: "JW_Acacia_v_Trees"
 author: "James Waterford"
 date: "2023-03-02"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -83,13 +85,21 @@ There we go! Now we have some clean(ish) data to look at. As we can see, Height 
 ```{r One more graph}
 
 
-Acacia_sub <- subset(trees, SPECIES == "Acacia_etbaica" | SPECIES == "Acacia_drepanolobium" | SPECIES == "Acacia_brevispica" | SPECIES == "Acacia_mellifera")
+Acacia_sub <- subset(trees, SPECIES == "Acacia_etbaica" | SPECIES == "Acacia_drepanolobium" | SPECIES == "Acacia_brevispica" | SPECIES == "Acacia_mellifera") 
+
+
 other_sub <- subset(trees, SPECIES != "Acacia_etbaica" & SPECIES != "Acacia_drepanolobium" & SPECIES != "Acacia_brevispica" & SPECIES != "Acacia_mellifera")
 
-trees$TreeType <- c("Acacia")
 
-ggplot(trees, aes(x= CIRC, y= HEIGHT, colour = SPECIES)) +
-  geom_point()
+
+ggplot() +
+  geom_point(data = Acacia_sub, aes(x= CIRC, y= HEIGHT), color = "slategray") +
+  geom_smooth(data = Acacia_sub,  method = "lm", mapping = aes(x= CIRC, y= HEIGHT), color = "grey23") +
+  geom_point(data = other_sub, aes(x= CIRC, y= HEIGHT), color = "red") +
+  geom_smooth(data = other_sub,  method = "lm", mapping = aes(x= CIRC, y= HEIGHT), color = "tomato2") +
+  scale_y_sqrt() +
+  scale_x_sqrt()
+                
   
 ```
 
