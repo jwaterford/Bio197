@@ -5,6 +5,7 @@ date: "2023-03-07"
 output:
   pdf_document: default
   html_document: default
+  word_document: default
 ---
 ```{r}
 library(dplyr)
@@ -56,10 +57,9 @@ head(surveys2)
 
 Pipes can be implemented in R with the `dplyr` package, and the `margittr` package.
 
-The orginal symbol of the pipe is `%>%`.
-However, we can also use `|>` for the same effect.
-
-The purpose of this pipe is to eliminate or reduce the need of intermediate variables.
+The orginal symbol of the pipe is `%>%`. 
+However, we can also use `|>` for the same effect. 
+The purpose of this pipe is to eliminate or reduce the need of intermediate variables. R Studio includes a shortcut for the pipe: `cmd + shft + m`
 
 
 ```{r pipe}
@@ -74,7 +74,7 @@ Let's calculate the median year of surveys.
 ``` {r}
 library(readr)
 surveys <- read_csv("197-raw_storage/surveys.csv")
-surveys$year |> median()
+surveys$year %>% median()
 ```
 Let's try calculating the mean of the weight. Because there are NAs in our weight column, we'll need to remove these.
 ```{r}
@@ -110,9 +110,78 @@ ds_weight_by_year <- select(ds_data_by_year, year, weight) `
 filter(surveys, species_id == "DS", !is.na(weight)) |>
   arrange(year) |>
   select(year, weight) -> ds_data_by_year
-  head(ds_data_by_year)
+  head(ds_data_by_year) 
+
+```
+What if I want to pipe to an argument other than the first argument?
+------------
+
+
+```{r unpiped}
+str(surveys)
+lm(formula = weight ~ year, data = surveys)
+```
+Sometimes, us coders are lazy. We don't want to put in every variable detail if we can avoid it. So we use the pipeline.
+```{r piped, eval = FALSE}
+surveys %>% 
+  lm(formula = weight ~ year, data = _)
+##This code will not run becuase we called data incorrectly##
+surveys %>% 
+  lm(formula = weight ~ year, data = .)
+surveys |>  
+  lm(formula = weight ~ year, data = _)
+
+```
+Piping Placeholders
+------------
+
+```{r}
+
+filter(surveys, species_id == "DS", !is.na(weight)) %>% 
+  lm(formula = weight ~ year, data = .) %>% 
+  summary()
+  
+```
+## Data Grouping / Data Aggregation
+
+The function `group_by()` combines rows based on *matching columns*.
+`group_by([data], [column])`
+```{r Data Agg}
+
+group_by(surveys,year)
+
+surveys %>% 
+group_by(year) 
+
+surveys %>% 
+group_by(sex, year) %>% 
+  summarize()
+```
+Okay, this is an alright tool, but it's better when we know how to use it.
+
+```{r}
+
+group_by(surveys, sex, year) %>% 
+  summarize(count = n())
+
+group_by(surveys, sex, year) %>% 
+  summarize(mean = mean(weight, na.rm = TRUE))
 
 ```
 
+```{r}
+surveys %>% 
+  group_by(species_id) %>% 
+  summarize(count = n())
 
+surveys %>% 
+  group_by(species_id, year) %>% 
+  summarize(count = n())
+
+surveys %>% 
+  filter(species_id == "DO") %>% 
+  group_by(year) %>% 
+  summarize(mean = mean(weight, na.rm = TRUE))
+
+```
 
