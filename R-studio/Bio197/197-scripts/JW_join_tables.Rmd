@@ -1,0 +1,78 @@
+---
+title: "Joining Data Tables"
+author: "James Waterford"
+date: "2023-03-14"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Joining Data Tables
+Shortcut: Use `crtl + opt + i` to create a code block.
+```{r Import Data}
+library(readr)
+library(dplyr)
+surveys <- read_csv("../197-raw_storage/surveys.csv")
+species <- read.csv( "../197-raw_storage/species.csv")
+plots <- read.csv("../197-raw_storage/plots.csv")
+```
+How do we combine tables?
+------------
+We can use the *shared columns* between different data frames to combine them.
+
+Specifically, we will use `_join` functions to combine two or mate data tables.
+
+The different functions of `_join` allow us to combine in different ways:
+
+`inner_join` - connects data sets, and removes all outliers.
+
+`left_join`  - keeps all values in x, and adds matching values for y
+
+`right_join` - keeps all values in y, and adds matching values in x
+
+`full_join`  - keeps all values of x AND y
+```{r}
+surveys %>% 
+inner_join(species, by = "species_id") -> join_table 
+head(join_table)
+str(join_table)
+
+```
+This is good! Now, let's filter out any plot types that aren't "Control".
+```{r what}
+surveys %>% 
+  inner_join(plots, by = "plot_id") %>% 
+  filter(plot_type == 'Control') %>% 
+  head() %>% 
+  str()
+```
+## Finding Relevant Data
+
+What if we don't know what columns both data sets have?
+
+What if sorting through columns is too much of a tedious task.
+
+```{r}
+intersect(colnames(surveys), colnames(species))
+```
+## Joining Multiple Tables
+
+```{r}
+surveys %>% 
+  inner_join(species, by = "species_id") %>% 
+  inner_join(plots, by = "plot_id") -> combined
+head(combined)
+str(combined)
+```
+
+```{r}
+surveys %>% 
+  inner_join(species, by = "species_id") %>% 
+  inner_join(plots, by = "plot_id") %>% 
+  filter(plot_type == 'Control' | plot_type == 'Long-term Krat Exclosure') %>% 
+  select(year, genus, species, weight, plot_type, taxa) %>% 
+  filter(taxa == 'Rodent', !is.na(weight))
+
+```

@@ -34,7 +34,7 @@ sqrt(mn)
 ```
 
 ```{r}
-library(readr)
+%>% library(readr)
 surveys <- read_csv("197-raw_storage/surveys.csv")
 species_data <- read.csv( "197-raw_storage/species.csv")
 plots_data <- read.csv("197-raw_storage/plots.csv")
@@ -146,6 +146,8 @@ filter(surveys, species_id == "DS", !is.na(weight)) %>%
 
 The function `group_by()` combines rows based on *matching columns*.
 `group_by([data], [column])`
+
+
 ```{r Data Agg}
 
 group_by(surveys,year)

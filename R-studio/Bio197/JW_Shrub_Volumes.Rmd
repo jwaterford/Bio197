@@ -1,0 +1,26 @@
+---
+title: "JW_Shrub_Volume.rmd"
+author: "James Waterford"
+date: "2023-03-14"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+```
+
+## Read the File
+
+```{r read}
+shrub_data <- read_csv("197-raw_storage/shrub-volume-data.csv")
+select(shrub_data, length) 
+select(shrub_data, site, experiment)
+mutate(shrub_data, area = length*width)
+arrange(shrub_data,length)
+filter(shrub_data, height > 5)
+filter(shrub_data,height > 5 & width > 2)
+filter(shrub_data, experiment == 1 | experiment == 3)
+shrub_volumes <- mutate(shrub_data, volume = height*width*length)
+```
+
