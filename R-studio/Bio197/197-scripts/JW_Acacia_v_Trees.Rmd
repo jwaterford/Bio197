@@ -80,17 +80,24 @@ ggplot(new_trees, aes(x = CANOPY,y= HEIGHT, color = TREATMENT)) +
   geom_point() +
   facet_wrap(~SPECIES) 
 ```
+
+
 There we go! Now we have some clean(ish) data to look at. As we can see, Height is quite variable, and might be correlated in some species. 
 
-```{r One more graph}
+Let's combine with another data set.
 
+
+```{r One more graph}
+unique(trees$SPECIES)
 
 Acacia_sub <- subset(trees, SPECIES == "Acacia_etbaica" | SPECIES == "Acacia_drepanolobium" | SPECIES == "Acacia_brevispica" | SPECIES == "Acacia_mellifera") 
 
 
 other_sub <- subset(trees, SPECIES != "Acacia_etbaica" & SPECIES != "Acacia_drepanolobium" & SPECIES != "Acacia_brevispica" & SPECIES != "Acacia_mellifera")
 
+### OR ###
 
+other_sub <- subset(trees, SPECIES == "Croton" | SPECIES == "Balanites")
 
 ggplot() +
   geom_point(data = Acacia_sub, aes(x= CIRC, y= HEIGHT), color = "slategray") +

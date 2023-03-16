@@ -1,0 +1,25 @@
+---
+title: "JW_Join_Data_Exercise"
+author: "James Waterford"
+date: "2023-03-16"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+surveys <- read_csv("../197-raw_storage/surveys.csv")
+species <- read_csv( "../197-raw_storage/species.csv")
+plots <- read_csv("../197-raw_storage/plots.csv")
+```
+
+## Homework
+
+```{r Exercise 5}
+inner_join(surveys, species, by = "species_id") %>% 
+  inner_join(plots, by = "plot_id") %>% 
+  select(month,day,year, species_id, weight, hindfoot_length) %>%
+  filter(!is.na(weight)) %>% 
+  arrange(species_id,desc(weight)) %>% 
+  head()
+```

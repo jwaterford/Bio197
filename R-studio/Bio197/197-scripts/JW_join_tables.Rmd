@@ -71,8 +71,23 @@ str(combined)
 surveys %>% 
   inner_join(species, by = "species_id") %>% 
   inner_join(plots, by = "plot_id") %>% 
+  filter(taxa == 'Rodent') %>% 
   filter(plot_type == 'Control' | plot_type == 'Long-term Krat Exclosure') %>% 
-  select(year, genus, species, weight, plot_type, taxa) %>% 
-  filter(taxa == 'Rodent', !is.na(weight))
+  filter(!is.na(weight)) %>% 
+  select(year, genus, species, weight, plot_type) %>% 
+  str()
 
 ```
+## Homework
+
+```{r}
+library(ggplot2)
+surveys %>% 
+  select(month, day, year, species_id, weight, hindfoot_length) %>% 
+  filter(!is.na(weight)) %>% 
+  filter(species_id =="DM"|species_id =="DO"|species_id == "DS") %>% 
+  arrange(species_id, weight) -> surveyed
+ggplot(data = surveyed, aes) +
+  barplot(height=surveyed$weight)
+```
+
