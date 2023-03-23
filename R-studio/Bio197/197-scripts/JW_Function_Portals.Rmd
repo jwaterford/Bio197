@@ -1,0 +1,43 @@
+---
+title: "JW_Function_Portals"
+author: "James Waterford"
+date: "2023-03-21"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load in data.
+
+```{r load}
+library(dplyr)
+sites <- read.csv("197-raw_storage/shrub-volume-sites.csv")
+expers <- read.csv( "197-raw_storage/shrub-volume-experiments.csv")
+vols <- read.csv("197-raw_storage/shrub-volume-data.csv")
+```
+
+## Combine Plots
+
+```{r}
+inner_join(expers, vols, by = "experiment") %>% 
+  inner_join(sites, by = "site") -> d_table
+  head(d_table)
+```
+
+
+
+
+
+
+
+## Exercise 9: Vectors
+
+```{r}
+
+
+```
+
+
+

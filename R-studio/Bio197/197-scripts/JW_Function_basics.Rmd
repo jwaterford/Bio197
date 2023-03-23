@@ -1,0 +1,54 @@
+---
+title: "JW_Function_basics"
+author: "James Waterford"
+date: "2023-03-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Functions
+
+THe basic form of a function is to 
+`function(a, b) {
+c <- a+b
+}`
+
+```{r error = TRUE}
+name_of_the_function <- function(data_frame, mass, length)
+  data_frame %>% 
+  group_by(mass, length) %>% 
+  summarize(n=n())
+```
+
+Exercise 1
+-------
+
+```{r Ex1}
+
+convert_pounds_to_grams <- function(pounds) {
+  grams = 453.6 * pounds
+  return(grams)
+}
+convert_pounds_to_grams(pounds = 30)
+
+
+```
+
+Exercise 2: **The weight of dinosaurs**
+-----------
+The length of an organism is strongly correlated with its body mass. 
+
+```{r dinosaurs}
+# Create a function for measuring length from body mass #
+length_theropoda <- function(length){
+  mass <- 0.73 * length ^ 3.63
+  # when length is provided to the function, it will output the mass, calculated by the length #
+  return(mass)
+}
+length_theropoda(length = 32)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
