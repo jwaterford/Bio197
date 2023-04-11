@@ -1,0 +1,95 @@
+---
+title: "JW_if-else"
+author: "James Waterford"
+date: "2023-03-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+
+```
+
+## Logical Conditions ##
+
+These are pieces of code that return as `TRUE` or `FALSE` values. 
+
+The common operators include symbols such as: `!=` ,  `==` ,  `>=` ,  `<=`
+
+
+
+Practice Logical & Conditional Statements
+-------------
+
+We also have some logical functions:
+
+- `is.na()` - tests if a value is `NA`.
+- `is.vector` - tests if variable is an array.
+- `is.data_frame` - give a guess.
+- `which()` - gives the position of all TRUE values
+
+```{r}
+letters == "r"
+which(letters == "r")
+```
+Applying Logicals
+------------
+```{r}
+
+w <- 10.2
+w > 10
+
+colors <-  c("red","blue","green")
+which(colors == "green")
+
+dna1 <- "attattaggaccaca" 
+dna2 <- "attattaggaacaca"
+dna1 == dna2
+dna2 != dna1
+
+
+```
+
+## Basic If-Statements ##
+
+If one variable is true, we can create a function based on the the logical value.
+```{r}
+age_class <- "sapling"
+if(age_class == "sapling"){
+  y <- 10.0
+  y
+}
+```
+
+## Handling multiple choices ## 
+
+```{r}
+age_class <- "seedling"
+if(age_class == "sapling"){
+  y <- 10.0
+} else {
+  y <- 5.0
+}
+  y
+ 
+```
+```{r}
+age_classing <- function(age_class){
+  if(age_class == "sapling"){
+   (y <- 10.0)
+} else if(age_class == "seedling"){
+   (y <- 5.0)
+} else if(age_class == "adult"){
+    (y <- 20.0)
+} else if(age_class == "mature"){
+    (y <- 40.0)
+} else if(age_class == "established"){
+    (y <- 50.0)
+}
+  y
+}
+age_classing("established")
+```
+
+
