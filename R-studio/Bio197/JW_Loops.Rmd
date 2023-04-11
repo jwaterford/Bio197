@@ -2,10 +2,13 @@
 title: "JW_Loops"
 author: "James Waterford"
 date: "2023-04-06"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
+library(dplyr)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -50,6 +53,7 @@ for (i in 1:length(birds)){
 How do we save the results from a For Loop?
 When using `vector()`, we don't need insert the mode or length
 ```{r}
+flowers <- c("daises","lilacs","lillies")
 my_results <- vector(mode = "character", length = length(flowers))
 for (i in 1:length(flowers)) {
   upper <- toupper(flowers[i])
@@ -67,5 +71,61 @@ for (i in 1:length(lengths)) {
   areas[i] <- lengths[i] * widths[i]
 }
 areas
+```
+
+```{r}
+
+#1#
+
+dino_dat <- read.csv("197-raw_storage/dinosaur_lengths.csv")
+
+get_mass_from_length_by_name <-function(length,name){
+  if(name == "Stegosauria"){
+    a = 10.95
+    b = 2.64
+  }
+  else if(name == "Theropoda"){
+    a = 0.73
+    b = 3.63
+  }
+  else if(name == "Sauropoda"){
+    a = 214.44
+    b = 1.46
+  }
+  else{
+    a = NA
+    b = NA
+  }
+  mass <- a * length^b
+  return(mass)
+}
+
+#2#
+
+results <- vector() 
+  for (i in 1:length(dino_dat$lengths)) {
+  myresults <- get_mass_from_length_by_name(length = dino_dat$lengths[i],name = dino_dat$species[i])
+  results[i] <- myresults
+
+  }
+
+#3#
+
+head(dino_dat)
+dino_dat$mass <- results
+
+#4#
+
+dino_dat %>% 
+  group_by(species) %>% 
+  summarize(mean_mass = (sum(mass)/length(lengths)))
+
+```
+
+```{r}
+#download.file("http://www.datacarpentry.org/semester-biology/data/individual_collar_data.zip.")
+
+#file <- unzip("197-raw_storage/individual_collar_data.zip")
+#list.files(file) 
 ```
 
