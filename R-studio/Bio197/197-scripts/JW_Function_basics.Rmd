@@ -51,4 +51,85 @@ length_theropoda <- function(length){
 length_theropoda(length = 32)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Data Wrangling & Pipe Functions
+
+Now we're getting to the good stuff.
+
+What if you wanted to run a function for any given data set? 
+
+What could we do to automate this process?
+
+```{r eval=FALSE}
+library(dplyr)
+## We can try automating the finding of files, but that takes a few too many steps in R. ##
+surveys <- read.csv("../197-raw_storage/surveys.csv")
+species <- read.csv("../197-raw_storage/species.csv")
+plots <- read.csv("../197-raw_storage/surveys.csv")
+```
+Testing the Limits of this Pipe
+--------
+Combine the surveys and species tables into a single data frame.
+
+There are several ways to create a data frame in R.
+- `read_csv`: If we already have a file (either tsv or csv) with data that we want to read into R as a data frame.
+
+- `data_frame()`: If we want to create a data frame from vectors.
+
+- `_join()`: If we want to combine multiple data frames.
+
+- `summarize`: If you want to create a new data frame summazring information from another data frame.
+
+
+```{r full_table}
+f_table <- inner_join(surveys, species, by = "species_id")
+```
+
+```{r}
+finder <- function(f_table, gns, spcs){
+  f_table %>% 
+    group_by(year) %>% 
+    filter(genus == gns | species == spcs) %>%
+    summarize(count =n()) -> output 
+    return(output)
+}
+finder(f_table, gns = "Dipodyms", spcs = "merriami")
+```
+```{r pipe_function}
+combiner <- function(surveys,species){
+  ## First, we call the data frame that we'd like to serve as the master ##
+  surveys %>% 
+    arrange(year) %>% 
+    left_join(species, by = "species_id") %>% 
+    return(full_set)
+}
+  combiner(surveys,species) -> full_table
+  
+```
+
+```{r}
+library(ggplot2)
+finder <- function(genus_name,species_name){
+  full_table %>% 
+    group_by(year) %>% 
+    filter(genus == genus_name | species == species_name) %>%
+    #select(genus,species) %>% 
+    summarize(count =n()) -> output 
+    return(output)
+}
+finder(genus="Dipodyms", species = "merriami")
+
+```
+
+```{r}
+  finder(genus="Dipodyms", species = "merriami") %>% 
+  ggplot(mapping = aes(x = year, y = count)) +
+  geom_line(color = "slategray") 
+```
+```{r}
+finder("Chaetodipus", "penicillatus") %>% 
+  ggplot(mapping = aes(x = year, y = count)) +
+  geom_point(size = 1, color = "orange" ) +
+  geom_line(size = 2, color = "purple") +
+  labs(x = "year", y = "Number of Individuals")
+```
