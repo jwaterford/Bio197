@@ -1,0 +1,71 @@
+---
+title: "JW_Loops"
+author: "James Waterford"
+date: "2023-04-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loops
+
+Loops, not dissimilar to those in Python, help you iterate a task for a given set of intervals.
+For loops are another way that we can tell a computer to repeat tasks for us. They are versatile and very explicit, so that means that we are controlling everything that is run on each iteration of the loop (mostly).
+
+
+The general structure: 
+  `for ([value] in [list]) {
+    do_something_with(values) 
+  }`
+
+```{r Practice 1}
+lengths <- c(13.3,15,100)
+
+for (value in lengths) {
+  mass <- 0.73 * value^2
+  print(mass)
+  ## `return()` does not work in loops ##
+}
+```
+
+```{r Practice 2}
+mass_lbs <- c(2.2,3.5,9.6,1.2)
+for (mass_lb in mass_lbs) {
+  mass_kg = mass_lb* 2.2
+  print(mass_kg)
+}
+```
+
+What is an index in R?
+It is the numeric position of values inside any data structre in R.
+We can use indexes to sort through the full length of a 
+```{r}
+birds <- c('robin', 'woodpecker', 'blue_jay', 'sparrow')
+for (i in 1:length(birds)){
+  print(birds[i])
+}
+```
+How do we save the results from a For Loop?
+When using `vector()`, we don't need insert the mode or length
+```{r}
+my_results <- vector(mode = "character", length = length(flowers))
+for (i in 1:length(flowers)) {
+  upper <- toupper(flowers[i])
+  my_results[i] <-(upper)
+}
+my_results
+```
+
+
+```{r}
+lengths <- c(1.1, 2.2, 1.6)
+widths <- c(3.5, 2.4, 2.8)
+areas <- vector(mode = "numeric", length = length(lengths))
+for (i in 1:length(lengths)) {
+  areas[i] <- lengths[i] * widths[i]
+}
+areas
+```
+
