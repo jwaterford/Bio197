@@ -74,40 +74,32 @@ areas
 ```
 
 ```{r}
-
 #1#
 
-dino_dat <- read.csv("197-raw_storage/dinosaur_lengths.csv")
+dino_dat <- read.csv("../197-raw_storage/dinosaur_lengths.csv")
 
-get_mass_from_length_by_name <-function(length,name){
-  if(name == "Stegosauria"){
+get_mass_from_length_by_name <- function(length,name){
+  if(name == "Stegosauria") {
     a = 10.95
     b = 2.64
-  }
-  else if(name == "Theropoda"){
+  } else if (name == "Theropoda") {
     a = 0.73
     b = 3.63
-  }
-  else if(name == "Sauropoda"){
+  } else if (name == "Sauropoda") {
     a = 214.44
     b = 1.46
-  }
-  else{
-    a = NA
-    b = NA
+  } else {
+    a = 25.37
+    b = 2.49
   }
   mass <- a * length^b
   return(mass)
 }
 
 #2#
-
-results <- vector() 
-  for (i in 1:length(dino_dat$lengths)) {
-  myresults <- get_mass_from_length_by_name(length = dino_dat$lengths[i],name = dino_dat$species[i])
-  results[i] <- myresults
-
-  }
+dino_dat %>% 
+  rowwise() %>% 
+get_mass_from_length_by_name(lengths,name=species)
 
 #3#
 
@@ -123,9 +115,64 @@ dino_dat %>%
 ```
 
 ```{r}
-#download.file("http://www.datacarpentry.org/semester-biology/data/individual_collar_data.zip.")
+library(ggplot2)
+#download.file(url = "http://www.datacarpentry.org/semester-biology/data/individual_collar_data.zip.", destfile =  "../197-raw_storage/individal_collars.zip")
 
-#file <- unzip("197-raw_storage/individual_collar_data.zip")
-#list.files(file) 
+file <- unzip("../197-raw_storage/individual_collar_data.zip")
+list.files(pattern = "collar-data-.*.txt") -> cfiles
+
+reader <- function(filelist) {
+
+  for (i in 1:length(filelist)) {
+  read.csv(filelist[i]) -> data_grab
+  ggplot(data = data_grab, mapping = aes(x=long, y=lat)) +
+    geom_path() +
+      ggtitle(filelist[i]) 
+  ggsave(paste0("plot_",i,".pdf"), device = "pdf")
+  }
+  
+}
+reader(filelist = cfiles)
+
 ```
+
+```{r}
+reader <- function(filelist) {
+
+  for (i in 1:length(filelist)) {
+  read.csv(filelist[i]) -> data_grab
+  ggplot(data = data_grab, mapping = aes(x=long, y=lat)) +
+    geom_path() +
+      ggtitle(filelist[i]) -> test
+  print(test)
+  }
+  
+}
+reader(filelist = cfiles)
+```
+
+Add code to the loop to calculate the minimum and maximum latitude in the file, and store these values, along with the name of the file, in a data frame. Show the data frame as output
+
+```{r}
+
+reader <- function(filelist) {
+
+  for (i in 1:length(filelist)) {
+  read.csv(filelist[i]) -> data_grab
+  ggplot(data = data_grab, mapping = aes(x=long, y=lat)) +
+    geom_path() +
+      ggtitle(filelist[i]) -> test
+  print(test)
+  }
+  
+}
+reader(filelist = cfiles)
+```
+
+
+`Use '!' to embed a plot`
+`![title](address)`
+`Use knitr package to add fig_chunk`
+<!-- ![A nice plot.](`r knitr::include_graphics('plot_1', 'pdf')`) -->
+
 

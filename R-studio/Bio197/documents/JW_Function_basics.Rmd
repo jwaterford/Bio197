@@ -133,3 +133,4 @@ finder("Chaetodipus", "penicillatus") %>%
   geom_line(size = 2, color = "purple") +
   labs(x = "year", y = "Number of Individuals")
 ```
+

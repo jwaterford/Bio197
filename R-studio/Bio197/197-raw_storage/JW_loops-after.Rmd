@@ -1,0 +1,97 @@
+---
+title: "JW_loops-after"
+author: "James Waterford"
+date: "2023-04-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+We will load in the library. After some searching, we see there are a handful of alternatives for NA values in our data set, so we'll sort this out with `na.strings()`
+```{r set-up}
+library(dplyr)
+library(stringr)
+
+preload <- read.delim("practice_data/tree_surveys.txt", sep = "\t", na.strings = c("dead", "missing", "MISSING", "NA", "?", "3.3."))
+```
+
+The goal of our function is to create a tool that will calculate the crown volume of a tree. The "basic" formula looks like this:
+
+`volume = a * HEIGHT^b * AXIS_1 * AXIS_2`
+
+Where `a` and `b` serve as constants that differ based on the `SPECIES` of tree.
+That means we have a total of *four* variables that we will need to apply in a function.
+
+Let's create a simpler function to start. For the species, Acacia, we know the a & b coeefficients to be: a = 0.16  b = 0.8
+```{r Acacia}
+## Functional, but more complicated ##
+# tree_volume_func <- function(height,axis1,axis2,species) {
+# if (species ==  "ACACIA) {
+# a = ?
+# b = ?
+#}
+
+
+tree_volume_func <- function(species,height,axis1,axis2) {
+ if (str_detect(species,"Acacia")) {
+   a = 0.16
+   b = 0.8
+ }
+  else {
+    a = NA
+    b = NA
+  }
+  volume = a * height^b * axis1 *axis2
+  return(volume)
+}
+
+tree_volume_func("Acacia_brevispica", 2.2, 3.5, 1.12)
+
+```
+
+
+
+
+```{r}
+tree_volume_calc <- function(species,height,axis1,axis2){
+  if (str_detect(species, "Acacia")) {
+    a = 0.16
+    b = 0.8
+  }
+  else if (str_detect(species, "Balanites")) {
+    a = 1.2
+    b = 0.26
+  }
+  else if (str_detect(species, "Croton")) {
+    a = 0.5
+    b = 0.6
+  }
+  else {
+    a = NA
+    b = NA
+  }
+  volume = a * height^b * axis1 *axis2
+  return(volume)
+}
+
+tree_volume_calc("Balanites", 2.2, 3.5, 1.12) 
+
+tree_volume_calc("Croton", 2.2, 3.5, 1.12)
+
+#mapply(tree_volume_calc(species = #preload$SPECIES,height = prelaod$HEIGHT,axis1 = #preload$AXIS_1,axis2 = preload$AXIS_2)) -> #tree_volume
+```
+
+## 
+
+With the full data set:
+
+```{r}
+## Using dplyr() to generate the table ##
+preload %>% 
+  rowwise() %>% 
+  mutate(volume = tree_volume_calc(species = SPECIES,height = HEIGHT,axis1 = AXIS_1,axis2 = AXIS_2)) -> tree_data
+
+```

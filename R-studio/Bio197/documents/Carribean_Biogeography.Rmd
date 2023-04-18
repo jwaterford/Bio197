@@ -1,0 +1,60 @@
+---
+title: "Carribean_Biogeography"
+author: "James Waterford"
+date: "2023-04-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(stringr)
+
+```
+
+##Carribean biogeography as a result of human expansion.
+
+
+Citation: Gleditsch, Jason et al. (2022), Data for: Contemporizing island biogeography theory with anthropogenic drivers of species richness, Dryad, Dataset, https://doi.org/10.5061/dryad.vx0k6djtn
+
+This data set has been retrieved from the DRYAD public domain, and released by Temple University.
+
+The aim of this database was to measure the *species richness* and *habitat diversity* among different sites across the carribean islands. 
+
+This dataset includes [#] of species, and [#] sites across [#] states.
+
+```{r import}
+
+## I need to move these files ##
+
+a <- "../197-raw_storage/doi_10.5061_dryad.vx0k6djtn__v6/Gleditsch_et_al_Caribbean_Bank_Data.csv"
+b <- "../197-raw_storage/doi_10.5061_dryad.vx0k6djtn__v6/Gleditsch_et_al_Caribbean_Herp_SR.csv"
+```
+
+```{r csv function}
+a_table <- read.csv(a)
+b_table <- read.csv(b)
+
+b_table$Bank <- str_to_title(b_table$Bank)
+carribean_set <- right_join(a_table,b_table, by = "Bank")
+str(carribean_set)
+```
+
+```{r}
+b_table %>% 
+  group_by(Clade) %>% 
+  summarise(Count_of_Introduced = sum(Introduced_SR))
+b_table %>% 
+  group_by(Bank) %>% 
+  summarise(Count_of_Introduced = sum(Introduced_SR))
+```
+```{r}
+b_table %>% 
+  group_by(Clade) %>% 
+  summarise(Count_of_Native = sum(Native_SR))
+b_table %>% 
+  group_by(Bank) %>% 
+  summarise(Count_of_Native = sum(Native_SR))
+```
+
+
