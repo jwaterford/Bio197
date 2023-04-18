@@ -81,7 +81,12 @@ tree_volume_calc("Balanites", 2.2, 3.5, 1.12)
 
 tree_volume_calc("Croton", 2.2, 3.5, 1.12)
 
-#mapply(tree_volume_calc(species = #preload$SPECIES,height = prelaod$HEIGHT,axis1 = #preload$AXIS_1,axis2 = preload$AXIS_2)) -> #tree_volume
+
+#mapply(FUN = tree_volume_calc(species = preload$SPECIES, height = preload$HEIGHT, axis1 = preload$AXIS_1, axis2 = preload$AXIS_2)) -> tree_volume
+
+#I don't know why I can't get this to work#
+
+
 ```
 
 ## 
@@ -92,6 +97,50 @@ With the full data set:
 ## Using dplyr() to generate the table ##
 preload %>% 
   rowwise() %>% 
-  mutate(volume = tree_volume_calc(species = SPECIES,height = HEIGHT,axis1 = AXIS_1,axis2 = AXIS_2)) -> tree_data
+  mutate(SIZE = tree_volume_calc(species = SPECIES,height = HEIGHT,axis1 = AXIS_1,axis2 = AXIS_2)) -> tree_data
+```
+## get_growth
+
+```{r}
+get_growth <- function(size,year){
+  rate <- ((size[len]-size[1]) / (year[len] - year[1]))
+  return(rate)
+}
+len <- 3
+get_growth(c(40.2, 42.6, 46.0), c(2020, 2021, 2022))
 
 ```
+
+```{r}
+head(tree_data)
+
+get_growth <- function(size,year,trees){
+  x <- trees
+  while(trees = x) {}
+  rate <- ((size[len]-size[1]) / (year[len] - year[1]))
+  return(rate)
+   }
+
+tree_data %>% 
+  filter(!is.na(TREATMENT)) %>%
+  summarise(ORIGINAL_TAG)
+
+
+
+tree_data %>% 
+  filter(!is.na(TREATMENT)) %>% 
+  group_by(ORIGINAL_TAG) %>% 
+  mutate(GROWTH_RATE = get_growth(size = SIZE,year = YEAR)) 
+
+tree <- (c(tree_data$ORIGINAL_TAG))
+
+
+
+
+```
+
+```{r}
+
+
+```
+
