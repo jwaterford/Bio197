@@ -1,0 +1,89 @@
+---
+title: "jw_tree_opentree"
+author: "James Waterford"
+date: "2023-04-20"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Open Tree of Life
+
+There are over 1 million named species of insects.
+
+There are only 5 thousand named species of mammals.
+
+There are about 200 thousand named species of flowering plants.
+
+
+
+**APE** stands for 'Analyses of Phylogenetics and Evolution'
+
+This library helps us read `.tre` files straight from Open Tree of Life.
+
+```{r}
+library(ape)
+library(rotl)
+library(dplyr)
+library(stringr)
+
+```
+
+Tree was downloaded from:
+
+https://tree.opentreeoflife.org/opentree/argus/opentree13.4@mrcaott498516ott3617819/Rhinatrema--Epicrionops-parkeri
+```{r}
+tree <- read.tree(file = "../197-raw_storage/subtree-node-mrcaott498516ott3617819-Rhinatrema--Epicrionops-parkeri.tre")
+plot(tree, cex = 0.5) 
+mtext(text = "Walter Jetz 2018 OpenTree tree")
+```
+
+We can also use a URL to directly call a tree with `ape::`
+
+```{r}
+small_tr <- read.tree(file = "http://ape-package.ird.fr/APER/APER2/primfive.tre")
+plot(small_tr)
+```
+
+
+```{r}
+## I need to move these files ##
+
+a <- "../197-raw_storage/doi_10.5061_dryad.vx0k6djtn__v6/Gleditsch_et_al_Caribbean_Bank_Data.csv"
+b <- "../197-raw_storage/doi_10.5061_dryad.vx0k6djtn__v6/Gleditsch_et_al_Caribbean_Herp_SR.csv"
+
+a_table <- read.csv(a)
+b_table <- read.csv(b)
+
+b_table$Bank <- str_to_title(b_table$Bank)
+carribean_set <- right_join(a_table,b_table, by = "Bank")
+str(carribean_set)
+
+```
+
+## The R Structure of a Phylogenetic Tree
+
+
+## Generating Matching Species Names
+
+We will use `tnrs_match_names()` to find the the proper `Ott_Id` for a given species.
+
+`Ott_id` is the Open Tree of Life Unique Identifier.
+
+```{r}
+species <- carribean_set$Clade[3:16]
+species
+carribean_taxa <-tnrs_match_names(species)
+carribean_taxa
+tr <- tol_induced_subtree(ott_ids = carribean_taxa$ott_id)
+plot(tr)
+
+
+```
+
+ 
+
