@@ -1,0 +1,92 @@
+---
+title: "jw_treejoin-vis"
+author: "James Waterford"
+date: "2023-04-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(BiocManager)
+```
+
+## Bioconductor
+
+There a handful of databses for hosting biological software
+in R. The most famous is **CRAN**, but another very reliable source is **Bioconductor**.
+
+When we are installing packages from CRAN, we use the function `install.packages()`. 
+
+To install packages from BioConductor, we use a function from an R package that is called `BiocManager` with the code `install.packages("BiocManager")`.
+
+Now we will need to  `library(BiocManager)`, we can now install packages directly from **Bioconductor**.
+
+We do this with `install()`
+
+
+## GG_tree
+
+The package `gg_tree` is an extension of `ggplot2`. Specifically, it used for the visualiztion of phyolgenetic trees.
+```{r echo = FALSE}
+# install("ggtree", force = TRUE)
+library(ggtree)
+library(ape)
+library(rotl)
+
+apes <- c("Pongo", "Pan", "Gorilla", "Hoolock", "Homo", "Hylobates", "Nomascus")
+
+ape_taxa <- tnrs_match_names(apes)
+
+ape_tr <- tol_induced_subtree(ott_ids = ape_taxa$ott_id)
+
+ggtree(ape_tr)
+```
+```{r}
+ serpentes <- c("Gerrhopilidae",    "Anomalepididae", "Leptotyphlopidae", "Typhlopidae", "Loxocemidae", "Cylindrophiidae", "Bolyeridae","Aniliidae", "Boidae", "Tropidophiidae","Xenopeltidae", "Anomochilidae", "Uropeltidae", "Pythonidae", "Elapidae", "Pareatidae", "Lamprophiidae", "Viperidae",   
+"Colubridae", "Hydrophiidae",
+"Xenodermatidae", "Dipsadidae",
+"Homalopsidae", "Acrochordidae")
+snake_taxa <- tnrs_match_names(serpentes)
+snake_taxa
+snake_tr <- tol_induced_subtree(ott_ids = snake_taxa$ott_id)
+
+ggtree(snake_tr)
+```
+
+## The structure of a tree in R
+
+We have an object that we named `snake_tr`. However, this phylogenetic tree tells us, quite literally, nothing. At least not on the surface level, with the information that we put in.
+
+We will use the `str()` command to get a deeper look.
+
+```{r}
+str(snake_tr)
+snake_tr$node.label
+```
+A *tip* represents a species at the current end of the phylogenetics tree.
+
+A *node* is an interior branching point, where a previously named ancestor exists.
+
+We are now going to install **aplot**.
+
+`install.packages(aplot)`
+
+Let's combine a taxonomy in another data set 
+```{r}
+library(dplyr)
+
+taxonomy <- read.csv("../197-raw_storage/portal-species-taxonomy.csv")
+
+surveys <- read.csv("../197-raw_storage/practice_data/surveys.csv")
+
+intersect(colnames(taxonomy),colnames(surveys))
+```
+
+```{r}
+joined <- inner_join(taxonomy,surveys, by = "species_id")
+head(joined)
+```
+
+
+
+
